@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  vein-server:
+    build: .
+    container_name: ${CONTAINER_NAME}
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    ports:
+      - "${PORT_GAME}:7777/udp"
+      - "${PORT_QUERY}:27015/udp"
+
+    volumes:
+      - ./data/serverfiles:/home/steam/server
+      - ./data/saves:/home/steam/server/Saves
+      - ./data/logs:/home/steam/server/Logs
+      - ./data/config:/home/steam/server/Config
+
+    command: >
+      bash -c " ./VeinServer.sh && tail -f /dev/null "
+
+    deploy:
+      resources:
+        limits:
+          memory: ${MEMORY_LIMIT}
+        reservations:
+          memory: ${MEMORY_RESERVATION}
