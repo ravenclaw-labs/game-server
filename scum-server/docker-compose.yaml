@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  scum-server:
+    image: gameservermanagers/gameserver:scum
+    container_name: ${CONTAINER_NAME}
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    ports:
+      - "${PORT_GAME_UDP}:7042/udp"
+      - "${PORT_GAME_TCP}:7042/tcp"
+      - "${PORT_QUERY_UDP}:27015/udp"
+      - "${PORT_RCON_TCP}:27020/tcp"
+
+    volumes:
+      # Arquivos do servidor
+      - ./data/serverfiles:/home/scumserver/serverfiles
+
+      # Saves / mundo
+      - ./data/saves:/home/scumserver/.config/Epic/SCUM/Saved
+
+      # Logs
+      - ./data/logs:/home/scumserver/log
+
+      # Backups
+      - ./data/backups:/home/scumserver/lgsm/backup
+
+      # Configurações LGSM
+      - ./data/config:/home/scumserver/lgsm/config-lgsm
+
+      # Mods (caso use futuramente)
+      - ./data/mods:/home/scumserver/serverfiles/Mods
+
+    command: >
+      bash -c "./scumserver start && tail -f /dev/null"
+
+    healthcheck:
+      test: [ "CMD", "pgrep", "SCUMServer" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 180s
+
+    deploy:
+      resources:
+        limits:
+          memory: ${MEMORY_LIMIT}
+        reservations:
+          memory: ${MEMORY_RESERVATION}
