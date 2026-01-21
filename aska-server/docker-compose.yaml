@@ -1,0 +1,46 @@
+services:
+  aska-server:
+    image: cm2network/steamcmd:latest
+    container_name: ${CONTAINER_NAME}
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    ports:
+      - "${PORT_UDP_MAIN}:7777/udp"       # Porta principal do ASKA
+      - "${PORT_QUERY}:27015/udp"         # Steam Query
+      - "${PORT_RCON}:27020/tcp"          # RCON futuro / ferramentas
+
+    volumes:
+      - ./data/serverfiles:/home/steam/aska/serverfiles
+      - ./data/saves:/home/steam/.local/share/aska/saves
+      - ./data/logs:/home/steam/aska/logs
+      - ./data/backups:/home/steam/aska/backups
+      - ./data/mods:/home/steam/aska/serverfiles/Mods
+      - ./data/config:/home/steam/aska/config
+
+    command: >
+      /bin/bash -c "
+      ./steamcmd.sh +force_install_dir /home/steam/aska/serverfiles
+      +login anonymous
+      +app_update ${STEAM_APP_ID} validate
+      +quit &&
+      cd /home/steam/aska/serverfiles &&
+      ./ASKA_Server.sh -log &
+      tail -f /home/steam/aska/logs/Server.log
+      "
+
+    healthcheck:
+      test: ["CMD", "pgrep", "ASKA_Server"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 180s
+    
+    deploy:
+      resources:
+        limits:
+          memory: ${MEMORY_LIMIT}
+        reservations:
+          memory: ${MEMORY_RESERVATION}
