@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   7dtd-server:
     image: vinanrra/7dtd-server:latest
