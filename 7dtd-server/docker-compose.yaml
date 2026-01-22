@@ -21,15 +21,15 @@ services:
       - ./data/mods:/home/sdtdserver/serverfiles/Mods
       - ./data/config:/home/sdtdserver/lgsm
 
-    command: ["/bin/bash", "-c", "./sdtdserver start && tail -f /dev/null"]
+    command: [ "/bin/bash", "-c", "./sdtdserver start && tail -f /dev/null" ]
 
     healthcheck:
-      test: ["CMD", "pgrep", "7DaysToDieServer"]
+      test: [ "CMD", "pgrep", "7DaysToDieServer" ]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 180s
-    
+
     deploy:
       resources:
         limits:
