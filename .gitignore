@@ -1,1 +1,18 @@
-*/data/mods/*
+# Docker
+**/data/config/**
+**/data/optvalheim/**
+**/data/worlds/**
+
+# Mods (geral)
+**/data/mods/
+
+# Valheim específico (opcional, mas ajuda)
+**/data/valheim/worlds/
+**/data/valheim/logs/
+**/data/valheim/config/
+
+# LinuxGSM / servidores (geral)
+**/data/lgsm/
+**/data/lgsm/config/
+**/data/lgsm/log/
+**/data/lgsm/backup/
