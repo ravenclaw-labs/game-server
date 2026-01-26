@@ -1,0 +1,23 @@
+services:
+  icarus-server:
+    image: mornedhels/icarus-server:latest
+    container_name: ${CONTAINER_NAME}
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    ports:
+      - "${PORT_UDP_MAIN}:17777/udp"
+      - "${PORT_QUERY_PORT}:27015/udp"
+
+    volumes:
+      - ./data/serverfiles:/home/icarus/drive_c/icarus
+      - ./data/gamefiles:/opt/icarus
+      - ./data/logs:/home/icarus/drive_c/icarus/Saved/Logs
+      - ./data/saves:/home/icarus/drive_c/icarus/Saved
+      - ./data/backups:/home/icarus/backups
+      - ./data/mods:/home/icarus/drive_c/icarus/Mods
+      - ./data/config:/home/icarus/drive_c/icarus/Saved/Config/WindowsServer
+    # não precisa de command especial — a imagem já gerencia
+    # supervisiona e atualiza automaticamente
