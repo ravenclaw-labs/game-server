@@ -11,8 +11,18 @@
 **/data/valheim/logs/
 **/data/valheim/config/
 
+# Icarus específico (opcional, mas ajuda)
+**/data/backups/
+**/data/config/
+**/data/gamefiles/
+**/data/logs/
+**/data/saves/
+**/data/Mods/
+**/data/Saved/
+
 # LinuxGSM / servidores (geral)
 **/data/lgsm/
 **/data/lgsm/config/
 **/data/lgsm/log/
 **/data/lgsm/backup/
+
