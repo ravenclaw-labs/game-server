@@ -1,0 +1,16 @@
+services:
+  conan-exiles-server:
+    image: melle2/conanexiles-ds:latest
+    container_name: conan-exiles-server
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    ports:
+      - "7777:7777/udp"
+      - "7778:7778/udp"
+      - "27015:27015/udp"
+
+    volumes:
+      - ./data:/data
