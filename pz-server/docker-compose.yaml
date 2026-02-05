@@ -1,0 +1,38 @@
+services:
+  pz-server:
+    image: gameservermanagers/gameserver:pz
+    container_name: ${CONTAINER_NAME}
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    ports:
+      - "${PORT_UDP_MAIN}:16261/udp"
+      - "${PORT_UDP_1}:16262/udp"
+      - "${PORT_UDP_2}:16263/udp"
+      - "${PORT_UDP_3}:16264/udp"
+      - "${PORT_UDP_4}:16265/udp"
+
+    volumes:
+      # Arquivos do servidor (SteamCMD + binários)
+      - ./data/serverfiles:/home/linuxgsm/serverfiles
+
+      # Saves / World / Players
+      - ./data/saves:/home/linuxgsm/Zomboid
+
+      # Logs
+      - ./data/logs:/home/linuxgsm/log
+
+      # Backups automáticos
+      - ./data/backups:/home/linuxgsm/lgsm/backup
+
+      # Configurações LinuxGSM
+      - ./data/config-lgsm:/home/linuxgsm/lgsm/config-lgsm
+
+    deploy:
+      resources:
+        limits:
+          memory: ${MEMORY_LIMIT}
+        reservations:
+          memory: ${MEMORY_RESERVATION}
